@@ -2,3 +2,4 @@ venv
 encrypted
 unencrypted
 .ipynb_checkpoints
+.vscode
