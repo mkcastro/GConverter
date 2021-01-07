@@ -69,13 +69,14 @@ def decrypt_pdf(filename):
 
 # %%
 def main():
-    decrypt_pdf()
+    decrypt_pdf("./encrypted/1.pdf")
     convert_pdf_to_csv("./unencrypted/1.pdf")
     df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
     rename_columns(df)
     cleanup_headers_and_footers(df)
     merge_multiline_transactions(df)
     merge_page_breaks(df)
+    # df.set_index('datetime', inplace=True)
     print(df)
 
 
