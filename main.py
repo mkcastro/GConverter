@@ -55,9 +55,17 @@ def merge_page_breaks(df):
     pass
 
 
+def rename_columns(df):
+    df.rename(
+        columns={"Date and Time": "datetime", "Reference No.": "reference_no"},
+        inplace=True,
+    )
+
+
 def main():
     convert_pdf_to_csv("./unencrypted/1.pdf")
     df = pd.read_csv("./output/1.csv")
+    rename_columns(df)
     cleanup_headers_and_footers(df)
     merge_multiline_transactions(df)
     merge_page_breaks(df)
