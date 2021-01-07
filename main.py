@@ -63,8 +63,13 @@ def rename_columns(df):
     df.columns = [x.lower() for x in df.columns]
 
 
+def decrypt_pdf(filename):
+    pass
+
+
 # %%
 def main():
+    decrypt_pdf()
     convert_pdf_to_csv("./unencrypted/1.pdf")
     df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
     rename_columns(df)
