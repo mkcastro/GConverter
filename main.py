@@ -30,6 +30,7 @@ def get_latest_file(directory):
 
 def convert_pdf_to_csv(filename):
     output_filename = filename[:-3]
+    output_filename = output_filename.replace("./unencrypted", "./output")
     tabula.convert_into(
         filename, output_filename + "csv", output_format="csv", pages="all"
     )
