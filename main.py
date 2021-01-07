@@ -2,6 +2,7 @@
 import datetime
 import os
 
+import pandas as pd
 import pikepdf
 import tabula
 
@@ -30,29 +31,37 @@ def decrypt(input_filename, password, output_filename):
     pdf.save(output_filename)
 
 
-def convert_pdf(filename):
-    return tabula.read_pdf(filename, pages="1-10")
+def convert_pdf_to_csv(filename):
+    output_filename = filename[:3]
+    tabula.convert_into(
+        filename, output_filename + "csv", output_format="csv", pages="all"
+    )
 
 
-def convert_dataframe_to_workable_data():
+def cleanup_headers_and_footers(df):
+    starting_balance_filter = df["description"] == "STARTING BALANCE"
+    ending_balance_filter = df["description"] == "ENDING BALANCE"
+    total_debit_filter = df["description"] == "Total Debit"
+    df.drop(index=df[starting_balance_filter].index, inplace=True)
+    df.drop(index=df[ending_balance_filter].index, inplace=True)
+    df.drop(index=df[total_debit_filter].index, inplace=True)
+
+
+def merge_multiline_transactions(df):
     pass
 
 
-def merge_page_breaks():
-    pass
-
-
-def display():
+def merge_page_breaks(df):
     pass
 
 
 def main():
-    filename = get_latest_file_unencrypted_file()
-    filename
-    # dataframe = convert_pdf(filename)
-    # convert_dataframe_to_workable_data()
-    # merge_page_breaks()
-    # display()
+    convert_pdf_to_csv("./unencrypted/1.pdf")
+    df = pd.read_csv("./output/1.csv")
+    cleanup_headers_and_footers(df)
+    merge_multiline_transactions(df)
+    merge_page_breaks(df)
+    df
 
 
 if __name__ == "__main__":
