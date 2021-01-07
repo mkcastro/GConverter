@@ -60,8 +60,10 @@ def rename_columns(df):
         columns={"Date and Time": "datetime", "Reference No.": "reference_no"},
         inplace=True,
     )
+    df.columns = [x.lower() for x in df.columns]
 
 
+# %%
 def main():
     convert_pdf_to_csv("./unencrypted/1.pdf")
     df = pd.read_csv("./output/1.csv")
@@ -69,7 +71,7 @@ def main():
     cleanup_headers_and_footers(df)
     merge_multiline_transactions(df)
     merge_page_breaks(df)
-    df
+    print(df)
 
 
 if __name__ == "__main__":
