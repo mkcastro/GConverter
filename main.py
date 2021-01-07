@@ -80,4 +80,23 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    pass
+
+# %%
+decrypt_pdf("./encrypted/1.pdf", "./unencrypted/1.pdf")
+# %%
+convert_pdf_to_csv("./unencrypted/1.pdf")
+# %%
+df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
+df
+# %%
+rename_columns(df)
+# %%
+cleanup_headers_and_footers(df)
+# %%
+merge_multiline_transactions(df)
+# %%
+merge_page_breaks(df)
+# %%
+print(df)
