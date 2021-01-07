@@ -6,6 +6,8 @@ import pandas as pd
 import pikepdf
 import tabula
 
+from settings import PASSWORD
+
 
 # %%
 def get_latest_file_unencrypted_file():
@@ -17,18 +19,13 @@ def get_latest_file_unencrypted_file():
     unencrypted_filename = current_date_and_time_string + extension
 
     if encrypted == unencrypted:
-        decrypt(encrypted, "password", unencrypted_filename)
+        decrypt_pdf(encrypted, "password", unencrypted_filename)
 
     return unencrypted_filename
 
 
 def get_latest_file(directory):
     return os.listdir()
-
-
-def decrypt(input_filename, password, output_filename):
-    pdf = pikepdf.open(input_filename, password=password)
-    pdf.save(output_filename)
 
 
 def convert_pdf_to_csv(filename):
@@ -63,13 +60,14 @@ def rename_columns(df):
     df.columns = [x.lower() for x in df.columns]
 
 
-def decrypt_pdf(filename):
-    pass
+def decrypt_pdf(input_filename, output_filename):
+    pdf = pikepdf.open(input_filename, password=PASSWORD)
+    pdf.save(output_filename)
 
 
 # %%
 def main():
-    decrypt_pdf("./encrypted/1.pdf")
+    decrypt_pdf("./encrypted/1.pdf", "./unencrypted/1.pdf")
     convert_pdf_to_csv("./unencrypted/1.pdf")
     df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
     rename_columns(df)
