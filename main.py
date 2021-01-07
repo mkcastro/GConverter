@@ -32,7 +32,7 @@ def decrypt(input_filename, password, output_filename):
 
 
 def convert_pdf_to_csv(filename):
-    output_filename = filename[:3]
+    output_filename = filename[:-3]
     tabula.convert_into(
         filename, output_filename + "csv", output_format="csv", pages="all"
     )
