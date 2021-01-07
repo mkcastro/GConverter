@@ -66,7 +66,7 @@ def rename_columns(df):
 # %%
 def main():
     convert_pdf_to_csv("./unencrypted/1.pdf")
-    df = pd.read_csv("./output/1.csv")
+    df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
     rename_columns(df)
     cleanup_headers_and_footers(df)
     merge_multiline_transactions(df)
