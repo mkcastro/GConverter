@@ -40,9 +40,11 @@ def cleanup_headers_and_footers(df):
     starting_balance_filter = df["description"] == "STARTING BALANCE"
     ending_balance_filter = df["description"] == "ENDING BALANCE"
     total_debit_filter = df["description"] == "Total Debit"
+    total_credit_filter = df["description"] == "Total Credit"
     df.drop(index=df[starting_balance_filter].index, inplace=True)
     df.drop(index=df[ending_balance_filter].index, inplace=True)
     df.drop(index=df[total_debit_filter].index, inplace=True)
+    df.drop(index=df[total_credit_filter].index, inplace=True)
 
 
 def merge_multiline_transactions(df):
