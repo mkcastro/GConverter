@@ -90,11 +90,15 @@ df = pd.read_csv("./output/1.csv", dtype={"Reference No.": object})
 df
 # %%
 rename_columns(df)
+df
 # %%
 cleanup_headers_and_footers(df)
+df
 # %%
 merge_multiline_transactions(df)
+df
 # %%
 merge_page_breaks(df)
+df
 # %%
 print(df)
