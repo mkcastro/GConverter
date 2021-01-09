@@ -47,10 +47,6 @@ def cleanup_headers_and_footers(df):
     df.drop(index=df[total_credit_filter].index, inplace=True)
 
 
-def merge_multiline_transactions(df):
-    pass
-
-
 def merge_page_breaks(df):
     pass
 
@@ -95,6 +91,33 @@ df
 cleanup_headers_and_footers(df)
 df
 # %%
+# TODO: i stopped here
+
+
+def merge_multiline_transactions(df):
+    for index, row in df.iterrows():
+        datetime = row["datetime"]
+
+        if pd.isnull(datetime) or (type(datetime) == list):
+            try:
+                # todo: check what column is overflowing,
+                # if it's either description or reference_no
+                prefix = df.loc[index]["description"]
+                suffix = df.loc[index + 2]["description"]
+
+                df.at[index + 1, "description"] = prefix + " " + suffix
+
+                df.drop(index=index, inplace=True)
+                df.drop(index=index + 2, inplace=True)
+
+                print(index, "not cool")
+            except KeyError:
+                pass
+        else:
+            # print(index)
+            pass
+
+
 merge_multiline_transactions(df)
 df
 # %%
