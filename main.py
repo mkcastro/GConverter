@@ -19,7 +19,7 @@ def get_latest_file_unencrypted_file():
     unencrypted_filename = current_date_and_time_string + extension
 
     if encrypted == unencrypted:
-        decrypt_pdf(encrypted, "password", unencrypted_filename)
+        decrypt_pdf(encrypted, unencrypted_filename)
 
     return unencrypted_filename
 
@@ -91,30 +91,58 @@ df
 cleanup_headers_and_footers(df)
 df
 # %%
-# TODO: i stopped here
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_rows', 60)
+# %%
+
+
+def get_row_type(row):
+    datetime = row["datetime"]
+    description = row["description"]
+
+    if pd.isnull(datetime) or (type(datetime) == list):
+        if pd.isnull(description) or (type(description) == list):
+            pass
+        else:
+            return "description"
+
+        reference_no = row["reference_no"]
+
+        if pd.isnull(reference_no) or (type(reference_no) == list):
+            pass
+        else:
+            return "reference_no"
+
+    return "clean"
 
 
 def merge_multiline_transactions(df):
     for index, row in df.iterrows():
-        datetime = row["datetime"]
 
-        if pd.isnull(datetime) or (type(datetime) == list):
-            try:
-                # todo: check what column is overflowing,
-                # if it's either description or reference_no
-                prefix = df.loc[index]["description"]
-                suffix = df.loc[index + 2]["description"]
+        row_type = get_row_type(row)
+
+        try:
+            if row_type == "description":
+                prefix = str(df.loc[index]["description"])
+                suffix = str(df.loc[index + 2]["description"])
 
                 df.at[index + 1, "description"] = prefix + " " + suffix
 
                 df.drop(index=index, inplace=True)
                 df.drop(index=index + 2, inplace=True)
+            elif row_type == "reference_no":
+                prefix = str(df.loc[index]["reference_no"])
+                reference_no = str(df.loc[index + 1]["reference_no"])
+                suffix = str(df.loc[index + 2]["reference_no"])
 
-                print(index, "not cool")
-            except KeyError:
-                pass
-        else:
-            # print(index)
+                df.at[index + 1, "reference_no"] = "{} {} {}".format(
+                    prefix, reference_no, suffix
+                )
+
+                df.drop(index=index, inplace=True)
+                df.drop(index=index + 2, inplace=True)
+        except KeyError:
+            # * skip deleted columns
             pass
 
 
